@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_formps",
+  "info": {
+    "singularName": "user-formp",
+    "pluralName": "user-formps",
+    "displayName": "user_form",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "isCompleted": {
+      "type": "boolean",
+      "default": false
+    },
+    "form": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::form.form"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

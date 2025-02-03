@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "forms",
+  "info": {
+    "singularName": "form",
+    "pluralName": "forms",
+    "displayName": "Form",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "formId": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "isCompleted": {
+      "type": "boolean"
+    },
+    "title": {
+      "type": "string",
+      "unique": true
+    },
+    "users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "completedForms"
+    },
+    "weeks": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::week-content.week-content",
+      "mappedBy": "forms"
+    }
+  }
+}
