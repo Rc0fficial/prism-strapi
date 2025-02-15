@@ -80,6 +80,18 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::goal.goal"
+    },
+    "selected_courses": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::course.course",
+      "inversedBy": "users"
+    },
+    "sessions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::session.session",
+      "inversedBy": "users"
     }
   }
 }
