@@ -22,24 +22,27 @@
     "description": {
       "type": "text"
     },
-    "completed": {
-      "type": "boolean"
-    },
     "resources": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::resource.resource"
-    },
-    "users_permissions_users": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "plugin::users-permissions.user"
     },
     "forms": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::form.form",
       "inversedBy": "weeks"
+    },
+    "week_number": {
+      "type": "integer"
+    },
+    "week_status": {
+      "type": "enumeration",
+      "enum": [
+        "closed",
+        "open",
+        "upcoming"
+      ]
     }
   }
 }

@@ -521,13 +521,88 @@ export interface ApiGoalGoal extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::goal.goal'> &
       Schema.Attribute.Private;
+    progress: Schema.Attribute.BigInteger;
     publishedAt: Schema.Attribute.DateTime;
     reason: Schema.Attribute.String;
     reward: Schema.Attribute.String;
+    status_check: Schema.Attribute.Enumeration<
+      ['In Progress', 'Completed', 'On Hold']
+    >;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
+export interface ApiMeetingMeeting extends Struct.CollectionTypeSchema {
+  collectionName: 'meetings';
+  info: {
+    description: '';
+    displayName: 'Meeting';
+    pluralName: 'meetings';
+    singularName: 'meeting';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date_time: Schema.Attribute.DateTime;
+    join_url: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::meeting.meeting'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
+export interface ApiProgressProgress extends Struct.CollectionTypeSchema {
+  collectionName: 'progresses';
+  info: {
+    displayName: 'progress';
+    pluralName: 'progresses';
+    singularName: 'progress';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    current_week: Schema.Attribute.Integer & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::progress.progress'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -627,6 +702,35 @@ export interface ApiUserFormpUserFormp extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiValueValue extends Struct.CollectionTypeSchema {
+  collectionName: 'values';
+  info: {
+    displayName: 'Value';
+    pluralName: 'values';
+    singularName: 'value';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    keyword: Schema.Attribute.String & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::value.value'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiWeekContentWeekContent extends Struct.CollectionTypeSchema {
   collectionName: 'week_contents';
   info: {
@@ -639,7 +743,6 @@ export interface ApiWeekContentWeekContent extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    completed: Schema.Attribute.Boolean;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -657,10 +760,8 @@ export interface ApiWeekContentWeekContent extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    users_permissions_users: Schema.Attribute.Relation<
-      'oneToMany',
-      'plugin::users-permissions.user'
-    >;
+    week_number: Schema.Attribute.Integer;
+    week_status: Schema.Attribute.Enumeration<['closed', 'open', 'upcoming']>;
     weekId: Schema.Attribute.UID & Schema.Attribute.Required;
   };
 }
@@ -1145,11 +1246,13 @@ export interface PluginUsersPermissionsUser
       'plugin::users-permissions.user'
     > &
       Schema.Attribute.Private;
+    meetings: Schema.Attribute.Relation<'oneToMany', 'api::meeting.meeting'>;
     password: Schema.Attribute.Password &
       Schema.Attribute.Private &
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    progress: Schema.Attribute.Relation<'oneToOne', 'api::progress.progress'>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1171,6 +1274,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 3;
       }>;
+    values: Schema.Attribute.Relation<'oneToMany', 'api::value.value'>;
   };
 }
 
@@ -1189,9 +1293,12 @@ declare module '@strapi/strapi' {
       'api::form.form': ApiFormForm;
       'api::global.global': ApiGlobalGlobal;
       'api::goal.goal': ApiGoalGoal;
+      'api::meeting.meeting': ApiMeetingMeeting;
+      'api::progress.progress': ApiProgressProgress;
       'api::resource.resource': ApiResourceResource;
       'api::session.session': ApiSessionSession;
       'api::user-formp.user-formp': ApiUserFormpUserFormp;
+      'api::value.value': ApiValueValue;
       'api::week-content.week-content': ApiWeekContentWeekContent;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

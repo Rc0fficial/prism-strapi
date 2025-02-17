@@ -76,11 +76,6 @@
       "target": "api::form.form",
       "inversedBy": "users"
     },
-    "goals": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::goal.goal"
-    },
     "selected_courses": {
       "type": "relation",
       "relation": "manyToMany",
@@ -92,6 +87,30 @@
       "relation": "manyToMany",
       "target": "api::session.session",
       "inversedBy": "users"
+    },
+    "goals": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::goal.goal",
+      "mappedBy": "users_permissions_user"
+    },
+    "values": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::value.value",
+      "mappedBy": "users_permissions_user"
+    },
+    "meetings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::meeting.meeting",
+      "mappedBy": "users_permissions_user"
+    },
+    "progress": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::progress.progress",
+      "mappedBy": "users_permissions_user"
     }
   }
 }
