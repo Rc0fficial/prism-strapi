@@ -4,7 +4,8 @@
   "info": {
     "singularName": "resource",
     "pluralName": "resources",
-    "displayName": "resource"
+    "displayName": "resource",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -14,8 +15,20 @@
     "title": {
       "type": "string"
     },
-    "website": {
-      "type": "string"
+    "description": {
+      "type": "text"
+    },
+    "link": {
+      "type": "text"
+    },
+    "week": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::week-content.week-content",
+      "inversedBy": "related_resources"
+    },
+    "details": {
+      "type": "richtext"
     }
   }
 }

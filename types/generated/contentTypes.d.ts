@@ -398,6 +398,44 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiAnswerAnswer extends Struct.CollectionTypeSchema {
+  collectionName: 'answers';
+  info: {
+    description: '';
+    displayName: 'Answer';
+    pluralName: 'answers';
+    singularName: 'answer';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::answer.answer'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    qna: Schema.Attribute.JSON & Schema.Attribute.Required;
+    question: Schema.Attribute.Relation<'manyToOne', 'api::question.question'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    weeks: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::week-content.week-content'
+    >;
+  };
+}
+
 export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
   collectionName: 'courses';
   info: {
@@ -606,9 +644,48 @@ export interface ApiProgressProgress extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiQuestionQuestion extends Struct.CollectionTypeSchema {
+  collectionName: 'questions';
+  info: {
+    description: '';
+    displayName: 'question';
+    pluralName: 'questions';
+    singularName: 'question';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    answers: Schema.Attribute.Relation<'oneToMany', 'api::answer.answer'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::question.question'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    q1: Schema.Attribute.Text & Schema.Attribute.Required;
+    q2: Schema.Attribute.String & Schema.Attribute.Required;
+    q3: Schema.Attribute.Text & Schema.Attribute.Required;
+    q4: Schema.Attribute.Text & Schema.Attribute.Required;
+    q5: Schema.Attribute.Text & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    week: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::week-content.week-content'
+    >;
+  };
+}
+
 export interface ApiResourceResource extends Struct.CollectionTypeSchema {
   collectionName: 'resources';
   info: {
+    description: '';
     displayName: 'resource';
     pluralName: 'resources';
     singularName: 'resource';
@@ -620,6 +697,9 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    details: Schema.Attribute.RichText;
+    link: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -631,7 +711,10 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    website: Schema.Attribute.String;
+    week: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::week-content.week-content'
+    >;
   };
 }
 
@@ -743,6 +826,7 @@ export interface ApiWeekContentWeekContent extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    answers: Schema.Attribute.Relation<'manyToMany', 'api::answer.answer'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -755,6 +839,11 @@ export interface ApiWeekContentWeekContent extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    questions: Schema.Attribute.Relation<'oneToMany', 'api::question.question'>;
+    related_resources: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::resource.resource'
+    >;
     resources: Schema.Attribute.Relation<'oneToMany', 'api::resource.resource'>;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
@@ -1223,6 +1312,7 @@ export interface PluginUsersPermissionsUser
     draftAndPublish: false;
   };
   attributes: {
+    answers: Schema.Attribute.Relation<'oneToMany', 'api::answer.answer'>;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     completedForms: Schema.Attribute.Relation<'manyToMany', 'api::form.form'>;
     completedWeeks: Schema.Attribute.Relation<
@@ -1289,12 +1379,14 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::about.about': ApiAboutAbout;
+      'api::answer.answer': ApiAnswerAnswer;
       'api::course.course': ApiCourseCourse;
       'api::form.form': ApiFormForm;
       'api::global.global': ApiGlobalGlobal;
       'api::goal.goal': ApiGoalGoal;
       'api::meeting.meeting': ApiMeetingMeeting;
       'api::progress.progress': ApiProgressProgress;
+      'api::question.question': ApiQuestionQuestion;
       'api::resource.resource': ApiResourceResource;
       'api::session.session': ApiSessionSession;
       'api::user-formp.user-formp': ApiUserFormpUserFormp;

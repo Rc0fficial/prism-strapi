@@ -43,6 +43,24 @@
         "open",
         "upcoming"
       ]
+    },
+    "questions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::question.question",
+      "mappedBy": "week"
+    },
+    "answers": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::answer.answer",
+      "mappedBy": "weeks"
+    },
+    "related_resources": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::resource.resource",
+      "mappedBy": "week"
     }
   }
 }

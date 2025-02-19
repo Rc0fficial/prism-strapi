@@ -111,6 +111,12 @@
       "relation": "oneToOne",
       "target": "api::progress.progress",
       "mappedBy": "users_permissions_user"
+    },
+    "answers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::answer.answer",
+      "mappedBy": "users_permissions_user"
     }
   }
 }
