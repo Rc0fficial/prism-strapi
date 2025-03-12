@@ -4,7 +4,8 @@
   "info": {
     "singularName": "progress",
     "pluralName": "progresses",
-    "displayName": "progress"
+    "displayName": "progress",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -20,6 +21,9 @@
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "progress"
+    },
+    "current_form": {
+      "type": "string"
     }
   }
 }

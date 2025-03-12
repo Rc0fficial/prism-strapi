@@ -493,6 +493,7 @@ export interface ApiFormForm extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::form.form'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    question: Schema.Attribute.Relation<'oneToOne', 'api::question.question'>;
     title: Schema.Attribute.String & Schema.Attribute.Unique;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -615,6 +616,7 @@ export interface ApiMeetingMeeting extends Struct.CollectionTypeSchema {
 export interface ApiProgressProgress extends Struct.CollectionTypeSchema {
   collectionName: 'progresses';
   info: {
+    description: '';
     displayName: 'progress';
     pluralName: 'progresses';
     singularName: 'progress';
@@ -626,6 +628,7 @@ export interface ApiProgressProgress extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    current_form: Schema.Attribute.String;
     current_week: Schema.Attribute.Integer & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<

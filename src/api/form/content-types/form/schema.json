@@ -34,6 +34,11 @@
       "relation": "manyToMany",
       "target": "api::week-content.week-content",
       "mappedBy": "forms"
+    },
+    "question": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::question.question"
     }
   }
 }
