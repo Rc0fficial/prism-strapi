@@ -43,6 +43,12 @@
     "q5": {
       "type": "text",
       "required": true
+    },
+    "form": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::form.form",
+      "inversedBy": "question"
     }
   }
 }
